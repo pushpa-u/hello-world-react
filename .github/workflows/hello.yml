@@ -26,5 +26,5 @@ jobs:
 
       - name: Deploy
         run: |
-          mkdir -p /var/www/my-react-app
-          cp -r build/* /var/www/my-react-app/
+          sudo mkdir -p /var/www/my-react-app
+          sudo cp -r build/* /var/www/my-react-app/
