@@ -1,8 +1,8 @@
 pipeline {
     agent any
-    tools {
-        docker 'Docker' 
-    }
+    // tools {
+    //     nodejs 'NodeJS' 
+    // }
     environment{
         DOCKER_USERNAME = credentials('DOCKER_HUB_USERNAME')
         DOCKER_PASSWORD = credentials('DOCKER_HUB_PASSWORD')
