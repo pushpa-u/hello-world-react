@@ -8,6 +8,6 @@ RUN npm install
 
 RUN npm install -g serve
 
-CMD ["serve","-s","build"]
+CMD ["npm","start"]
 
 EXPOSE 3000
