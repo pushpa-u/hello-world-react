@@ -11,7 +11,7 @@ pipeline {
         // REMOTE_PASSWORD = credentials('REMOTE_PASSWORD')
         // REMOTE_IP = credentials('REMOTE_IP')
     }
-    
+
     stages {
         stage('Checkout Code') {
             steps {
@@ -28,7 +28,10 @@ pipeline {
                     sh """
                     echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
                     DOCKER_ACCESS_TOKEN=\$(curl -s -H "Content-Type: application/json" -X POST -d '{"username": "$DOCKER_USERNAME", "password": "$DOCKER_PASSWORD"}' https://hub.docker.com/v2/users/login/ | jq -r .token)
-                    input_string=\$(curl -s -H "Authorization: Bearer \$DOCKER_ACCESS_TOKEN" https://registry.hub.docker.com/v2/repositories/pushpau/$DOCKER_REPO/tags | jq -r '.results | max_by(.last_updated) | .name')
+                    input_string=$(curl -s -H "Authorization: Bearer \$DOCKER_ACCESS_TOKEN" https://registry.hub.docker.com/v2/repositories/pushpau/$DOCKER_REPO/tags | jq -r '.results | max_by(.last_updated) | .name')
+                    if [ -z "$input_string" ] || [ "$input_string" == "null" ]; then
+                        input_string="v0"
+                    fi                   
                     number=\$(echo "\$input_string" | grep -oE '[0-9]+\$') && new_number=\$((number + 1)) && new_string=\$(echo "\$input_string" | sed "s/\$number\$/\$new_number/")
                     docker build -t pushpau/$DOCKER_REPO:\$new_string .
                     docker push pushpau/$DOCKER_REPO:\$new_string
