@@ -28,7 +28,7 @@ pipeline {
                     sh """
                     echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
                     DOCKER_ACCESS_TOKEN=\$(curl -s -H "Content-Type: application/json" -X POST -d '{"username": "$DOCKER_USERNAME", "password": "$DOCKER_PASSWORD"}' https://hub.docker.com/v2/users/login/ | jq -r .token)
-                    input_string=\$(curl -s -H "Authorization: Bearer \$DOCKER_ACCESS_TOKEN" https://registry.hub.docker.com/v2/repositories/pushpau/$DOCKER_REPO/tags | jq -r '.results | max_by(.last_updated) | .name')
+                    input_string=sh(\$(curl -s -H "Authorization: Bearer \$DOCKER_ACCESS_TOKEN" https://registry.hub.docker.com/v2/repositories/pushpau/$DOCKER_REPO/tags | jq -r '.results | max_by(.last_updated) | .name'),returnStdout: true)
                     if [ -z "$input_string" ] || [ "$input_string" == "null" ]; then
                         input_string="v0"
                     fi                   
