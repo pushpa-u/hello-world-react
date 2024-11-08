@@ -42,7 +42,7 @@ pipeline {
         stage('Deploy to Server') {
             steps {
                 script {
-                    sshagent(['REMOTE_SSH']) { 
+                    sshagent(credentials: ['REMOTE_SSH']) { 
                         sh """
                         ssh -o StrictHostKeyChecking=no $REMOTE_USER@$REMOTE_IP "sudo -i bash /root/practice-pipeline/deploy.sh"
                         """
