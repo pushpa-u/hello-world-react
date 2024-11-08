@@ -7,9 +7,8 @@ pipeline {
         DOCKER_USERNAME = credentials('DOCKER_HUB_USERNAME')
         DOCKER_PASSWORD = credentials('DOCKER_HUB_PASSWORD')
         DOCKER_REPO = credentials('DOCKER_HUB_REPO')
-        // REMOTE_USER = credentials('REMOTE_USER')
-        // REMOTE_PASSWORD = credentials('REMOTE_PASSWORD')
-        // REMOTE_IP = credentials('REMOTE_IP')
+        REMOTE_USER = credentials('REMOTE_USER')
+        REMOTE_IP = credentials('REMOTE_IP')
     }
 
     stages {
@@ -40,16 +39,16 @@ pipeline {
             }
         }
 
-        // stage('Deploy to Server') {
-        //     steps {
-        //         script {
-        //             sshagent(['jenkins-ssh-key-id']) { // Replace with your Jenkins SSH key credential ID
-        //                 sh """
-        //                 ssh -o StrictHostKeyChecking=no $REMOTE_USER@$REMOTE_HOST "bash /root/screening/deploy/integration/deploy.sh"
-        //                 """
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Deploy to Server') {
+            steps {
+                script {
+                    sshagent(['REMOTE_SSH']) { 
+                        sh """
+                        ssh -o StrictHostKeyChecking=no $REMOTE_USER@$REMOTE_IP "sudo -i bash /root/practice-pipeline/deploy.sh"
+                        """
+                    }
+                }
+            }
+        }
     }
 }
