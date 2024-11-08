@@ -7,9 +7,9 @@ pipeline {
         DOCKER_USERNAME = credentials('DOCKER_HUB_USERNAME')
         DOCKER_PASSWORD = credentials('DOCKER_HUB_PASSWORD')
         DOCKER_REPO = credentials('DOCKER_HUB_REPO')
-        REMOTE_USER = credentials('REMOTE_USER')
-        REMOTE_PASSWORD = credentials('REMOTE_PASSWORD')
-        REMOTE_IP = credentials('REMOTE_IP')
+        // REMOTE_USER = credentials('REMOTE_USER')
+        // REMOTE_PASSWORD = credentials('REMOTE_PASSWORD')
+        // REMOTE_IP = credentials('REMOTE_IP')
     }
     stages {
         stage('Checkout Code') {
