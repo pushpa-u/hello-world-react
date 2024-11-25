@@ -21,6 +21,13 @@ pipeline {
             }
         }
 
+        stage('Test Docker') {
+            steps {
+                sh 'docker --version'
+                sh 'docker ps'
+            }
+}
+
         // Copy ENV variables
 
         stage('Login to Docker, Build and Push Image') {
