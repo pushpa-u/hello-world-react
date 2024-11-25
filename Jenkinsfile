@@ -7,8 +7,8 @@ pipeline {
         DOCKER_USERNAME = credentials('DOCKER_HUB_USERNAME')
         DOCKER_PASSWORD = credentials('DOCKER_HUB_PASSWORD')
         DOCKER_REPO = credentials('DOCKER_HUB_REPO')
-        REMOTE_USER = credentials('REMOTE_USER')
-        REMOTE_IP = credentials('REMOTE_IP')
+        // REMOTE_USER = credentials('REMOTE_USER')
+        // REMOTE_IP = credentials('REMOTE_IP')
     }
 
     stages {
@@ -39,16 +39,16 @@ pipeline {
             }
         }
 
-        stage('Deploy to Server') {
-            steps {
-                script {
-                    sshagent(credentials: ['REMOTE_SSH']) { 
-                        sh """
-                        ssh -o StrictHostKeyChecking=no $REMOTE_USER@$REMOTE_IP "sudo -i bash /root/practice-pipeline/deploy.sh"
-                        """
-                    }
-                }
-            }
-        }
+        // stage('Deploy to Server') {
+        //     steps {
+        //         script {
+        //             sshagent(credentials: ['REMOTE_SSH']) { 
+        //                 sh """
+        //                 ssh -o StrictHostKeyChecking=no $REMOTE_USER@$REMOTE_IP "sudo -i bash /root/practice-pipeline/deploy.sh"
+        //                 """
+        //             }
+        //         }
+        //     }
+        // }
     }
 }
