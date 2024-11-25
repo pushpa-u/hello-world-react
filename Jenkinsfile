@@ -1,8 +1,10 @@
 pipeline {
-    agent any
-    docker {
+    agent {
+        docker {
          image 'docker:latest'
     }
+    }
+    
     environment{
         DOCKER_USERNAME = credentials('DOCKER_HUB_USERNAME')
         DOCKER_PASSWORD = credentials('DOCKER_HUB_PASSWORD')
