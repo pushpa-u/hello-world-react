@@ -11,6 +11,7 @@ pipeline {
         REMOTE_IP = credentials('REMOTE_IP')
     }
 
+
     stages {
         stage('Checkout Code') {
             steps {
