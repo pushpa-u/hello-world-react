@@ -1,11 +1,8 @@
 pipeline {
-    agent {
-        docker {
-         image 'docker:latest'
-         args '-v /var/run/docker.sock:/var/run/docker.sock'
-    }
-    }
-    
+    agent any
+    // tools {
+    //     nodejs 'NodeJS' 
+    // }
     environment{
         DOCKER_USERNAME = credentials('DOCKER_HUB_USERNAME')
         DOCKER_PASSWORD = credentials('DOCKER_HUB_PASSWORD')
@@ -20,13 +17,6 @@ pipeline {
                 git branch: 'puspa-jenkin', url: 'https://github.com/pushpa-u/hello-world-react.git' 
             }
         }
-
-        stage('Test Docker') {
-            steps {
-                sh 'docker --version'
-                sh 'docker ps'
-            }
-}
 
         // Copy ENV variables
 
