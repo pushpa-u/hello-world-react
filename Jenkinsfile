@@ -32,7 +32,8 @@ pipeline {
                         input_string="v0"
                     fi                   
                     number=\$(echo "\$input_string" | grep -oE '[0-9]+\$') && new_number=\$((number + 1)) && new_string=\$(echo "\$input_string" | sed "s/\$number\$/\$new_number/")
-
+                    docker build -t pushpau/$DOCKER_REPO:\$new_string .
+                    docker push pushpau/$DOCKER_REPO:\$new_string
                     """
                 }
             }
