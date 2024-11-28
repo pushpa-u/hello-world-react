@@ -18,6 +18,7 @@ pipeline {
             }
         }
 
+
         // Copy ENV variables
 
         stage('Login to Docker, Build and Push Image') {
