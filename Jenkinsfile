@@ -19,28 +19,7 @@ pipeline {
             }
         }
 
-         stage('Build Docker Image') {
-            steps {
-                script {
-                    // Build Docker image using the repository and tag
-                    def appImage = docker.build("${DOCKER_REPO}:${DOCKER_TAG}")
-                }
-            }
-        }
-
-
-        stage('Push Docker Image') {
-            steps {
-                script {
-                    // Use Docker Hub credentials for authentication
-                    docker.withRegistry('https://index.docker.io/v1/', 'Dckerhub-Credentials') {
-                        def appImage = docker.image("${DOCKER_REPO}:${DOCKER_TAG}")
-                        appImage.push() // Push the Docker image to Docker Hub
-                    }
-                }
-            }
-        }
-
+    
  
     }
 }
