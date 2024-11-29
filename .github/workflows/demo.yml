@@ -31,14 +31,14 @@ jobs:
       #     echo "${DOCKERUAT_UI_ENV_FILE}" > .env
   
       - name: Log in to Docker Hub
-        run: docker login -u ${{ secrets.DOCKER_USERNAME_UAT }} -p ${{ secrets.DOCKER_PASSWORD_UAT }}
+        run: docker login -u $DOCKER_USERNAME_UAT -p $DOCKER_PASSWORD_UAT
 
       - name: Get latest tag version
         id: get-version
         run: |
           set -e
           echo "Requesting Docker Hub access token..."
-          DOCKER_ACCESS_TOKEN=$(curl -s -H "Content-Type: application/json" -X POST -d '{"username": "'${{ secrets.DOCKER_USERNAME_UAT }}'", "password": "'${{ secrets.DOCKER_PASSWORD_UAT }}'"}' https://hub.docker.com/v2/users/login/ | jq -r .token)
+          DOCKER_ACCESS_TOKEN=$(curl -s -H "Content-Type: application/json" -X POST -d '{"username": "'$DOCKER_USERNAME_UAT'", "password": "'$DOCKER_PASSWORD_UAT'"}' https://hub.docker.com/v2/users/login/ | jq -r .token)
           if [ -z "$DOCKER_ACCESS_TOKEN" ]; then
             echo "Error: Unable to fetch Docker Hub access token."
             exit 1
