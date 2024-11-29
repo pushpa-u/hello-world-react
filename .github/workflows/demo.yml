@@ -67,12 +67,12 @@ jobs:
       - name: Build and push Docker image with new tag
         run: |
           
-          docker build -t pushpa/$DOCKER_REPO_UI_UAT:$new_tag .
+          docker build -t pushpau/$DOCKER_REPO_UI_UAT:$new_tag .
           docker push pushpau/$DOCKER_REPO_UI_UAT:$new_tag
       
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v3
         with:
           name: react-build
-          path: pushpa/
+          path: build/
 
