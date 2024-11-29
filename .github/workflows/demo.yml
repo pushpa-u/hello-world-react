@@ -46,7 +46,7 @@ jobs:
           echo "Access token acquired: $DOCKER_ACCESS_TOKEN"
 
           echo "Fetching the latest tag from Docker Hub repository..."
-          tags_response=$(curl -s -H "Authorization: Bearer $DOCKER_ACCESS_TOKEN" https://registry.hub.docker.com/v2/repositories/pushpau/${{ secrets.DOCKER_REPO_UI_UAT }}/tags)
+          tags_response=$(curl -s -H "Authorization: Bearer $DOCKER_ACCESS_TOKEN" https://registry.hub.docker.com/v2/repositories/pushpau/$DOCKER_REPO_UI_UAT/tags)
           echo "Tags response: $tags_response"
           input_string=$(echo $tags_response | jq -r '.results | max_by(.last_updated) | .name')
 
@@ -67,8 +67,8 @@ jobs:
       - name: Build and push Docker image with new tag
         run: |
           
-          docker build -t pushpa/${{ secrets.DOCKER_REPO_UI_UAT }}:$new_tag .
-          docker push pushpau/${{ secrets.DOCKER_REPO_UI_UAT }}:$new_tag
+          docker build -t pushpa/$DOCKER_REPO_UI_UAT:$new_tag .
+          docker push pushpau/$DOCKER_REPO_UI_UAT:$new_tag
       
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v3
