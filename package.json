@@ -1,5 +1,5 @@
 {
-  "name": "@pushpa-u/hello-world",
+  "name": "@pushpa-u/hello-world-react",
   "version": "0.1.1",
   "private": false,
   "dependencies": {
@@ -35,7 +35,10 @@
       "last 1 safari version"
     ]
   },
+  "repository": {
+    "url": "https://github.com/pushpa-u/hello-world-react.git"
+  },
   "publishConfig": {
-  "@pushpa-u:registry": "https://npm.pkg.github.com"
+    "registry": "https://npm.pkg.github.com"
 }
 }
