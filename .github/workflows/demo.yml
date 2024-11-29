@@ -1,78 +1,21 @@
-name: Practice the Artifacts on github
+name: Node.js CI
 
 on:
   push:
-    branches:
-      - 'github-pipeline'
-    # paths:
-    #   - 'screening-ui/**'
-
-env:
-  # DOCKERFILEPATH: "./screening-ui"
-  DOCKER_USERNAME_UAT: "pushpau"
-  DOCKER_PASSWORD_UAT: "100902@Pushpa"
-  DOCKER_REPO_UI_UAT: "react-jenkin"
-
+      branches: "github-pipeline"
 
 jobs:
-  Build-Deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+    - uses: actions/checkout@v3
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+    - run: npm ci
+    - run: npm run build --if-present
 
-      - name: Set up Docker CLI
-        uses: docker/setup-buildx-action@v1 # Set the Docker CLI version
-      
-      # - name: Copy env variables
-      #   run: |
-      #     cd "$DOCKERFILEPATH"
-      #     echo "${DOCKERUAT_UI_ENV_FILE}" > .env
-  
-      - name: Log in to Docker Hub
-        run: docker login -u $DOCKER_USERNAME_UAT -p $DOCKER_PASSWORD_UAT
-
-      - name: Get latest tag version
-        id: get-version
-        run: |
-          set -e
-          echo "Requesting Docker Hub access token..."
-          DOCKER_ACCESS_TOKEN=$(curl -s -H "Content-Type: application/json" -X POST -d '{"username": "'$DOCKER_USERNAME_UAT'", "password": "'$DOCKER_PASSWORD_UAT'"}' https://hub.docker.com/v2/users/login/ | jq -r .token)
-          if [ -z "$DOCKER_ACCESS_TOKEN" ]; then
-            echo "Error: Unable to fetch Docker Hub access token."
-            exit 1
-          fi
-          echo "Access token acquired: $DOCKER_ACCESS_TOKEN"
-
-          echo "Fetching the latest tag from Docker Hub repository..."
-          tags_response=$(curl -s -H "Authorization: Bearer $DOCKER_ACCESS_TOKEN" https://registry.hub.docker.com/v2/repositories/pushpau/$DOCKER_REPO_UI_UAT/tags)
-          echo "Tags response: $tags_response"
-          input_string=$(echo $tags_response | jq -r '.results | max_by(.last_updated) | .name')
-
-          if [ -z "$input_string" ]; then
-            new_tag="v1"
-          else
-            number=$(echo "$input_string" | grep -oE '[0-9]+$')
-            if [ -z "$number" ]; then
-              new_tag="v1"
-            else
-              new_number=$((number + 1))
-              new_tag="v$new_number"
-            fi
-          fi
-          echo "new_tag=$new_tag" >> $GITHUB_ENV
-          echo "New tag: $new_tag"
-
-      - name: Build and push Docker image with new tag
-        run: |
-          
-          docker build -t pushpau/$DOCKER_REPO_UI_UAT:$new_tag .
-          docker push pushpau/$DOCKER_REPO_UI_UAT:$new_tag
-      
-      - name: Upload Build Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: react-build
-          path: build/
-
+    - uses: actions/upload-artifact@v3
+      with:
+        name: Build
+        path: build
