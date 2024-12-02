@@ -9,21 +9,42 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Set Up Node.js
       uses: actions/setup-node@v3
-    - run: npm ci
-    - run: npm run build --if-present
 
-    - uses: actions/upload-artifact@v3
+    - name: Install Dependencies
+      run: npm ci
+
+    - name: Build Project
+      run: npm run build --if-present
+
+    - name: Get Latest Git Tag
+      id: get_tag
+      run: |
+        latest_tag=$(git tag --sort=-v:refname | head -n 1)
+        if [ -z "$latest_tag" ]; then
+          new_tag="v1.0.0"
+        else
+          # Increment the tag (e.g., v1.0.0 -> v1.0.1)
+          version=$(echo $latest_tag | sed 's/v//')
+          IFS='.' read -r major minor patch <<< "$version"
+          patch=$((patch + 1))
+          new_tag="v${major}.${minor}.${patch}"
+        fi
+        echo "new_tag=$new_tag" >> $GITHUB_ENV
+
+    - name: Create New Git Tag
+      run: |
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+        git tag ${{ env.new_tag }}
+        git push origin ${{ env.new_tag }}
+
+    - name: Upload Build Artifact
+      uses: actions/upload-artifact@v3
       with:
-        name: Build-v${{ github.run_number }}.${{ github.run_attempt }}
+        name: Build-${{ env.new_tag }}
         path: build
-        retention-days: 5
-
-    # - name: Output Run ID
-    #   run: echo ${{ github.run_id }}
-    # - name: Output Run Number
-    #   run: echo ${{ github.run_number }}
-    # - name: Output Run Attempt
-    #   run: echo ${{ github.run_attempt }}
