@@ -37,6 +37,8 @@ jobs:
         echo "new_tag=$new_tag" >> $GITHUB_ENV
 
     - name: Create New Git Tag
+      env:
+        GITHUB_TOKEN: ${{ secrets.TOKEN }}
       run: |
         git config user.name "pushpa-u"
         git config user.email "pushpa.u@10decoders.in"
