@@ -11,6 +11,10 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+        tags: true
+
 
     - name: Set Up Node.js
       uses: actions/setup-node@v3
@@ -24,7 +28,8 @@ jobs:
     - name: Get Latest Git Tag
       id: get_tag
       run: |
-        latest_tag=$(git ls-remote --tags --sort=committerdate | grep -o 'v.*' | sort -r | head -1)
+        git fetch --tags
+        latest_tag=$(git tag --sort=-committerdate | head -n 1)
         echo "latest=$latest_tag"
         if [ -z "$latest_tag" ]; then
           new_tag="v1.0.0"
