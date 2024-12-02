@@ -20,10 +20,10 @@ jobs:
         name: Build-v${{ github.run_number }}
         path: build
         retention-days: 5
-        
-    - name: Output Run ID
-      run: echo ${{ github.run_id }}
-    - name: Output Run Number
-      run: echo ${{ github.run_number }}
-    - name: Output Run Attempt
-      run: echo ${{ github.run_attempt }}
+
+    # - name: Output Run ID
+    #   run: echo ${{ github.run_id }}
+    # - name: Output Run Number
+    #   run: echo ${{ github.run_number }}
+    # - name: Output Run Attempt
+    #   run: echo ${{ github.run_attempt }}
