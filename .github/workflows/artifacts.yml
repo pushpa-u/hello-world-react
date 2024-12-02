@@ -28,12 +28,16 @@ jobs:
         echo $latest_tag
         if [ -z "$latest_tag" ]; then
           new_tag="v1.0.0"
+          echo "Null value"
         else
           # Increment the tag (e.g., v1.0.0 -> v1.0.1)
           version=$(echo $latest_tag | sed 's/v//')
+          echo $version
           IFS='.' read -r major minor patch <<< "$version"
           patch=$((patch + 1))
+          echo $patch
           new_tag="v${major}.${minor}.${patch}"
+          echo "new_tag=$new_tag"
         fi
         echo $new_tag
         echo "new_tag=$new_tag" >> $GITHUB_ENV
