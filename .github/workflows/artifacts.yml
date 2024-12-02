@@ -28,7 +28,7 @@ jobs:
       id: get_tag
       run: |
         git fetch --tags
-        latest_tag=$(git tag --sort=-committerdate | head -n 1)
+        latest_tag=$(git tag --sort=-committerdate | grep -o 'v.*' | sort -r | head -1)
         echo $latest_tag
         if [ -z "$latest_tag" ]; then
           new_tag="v1.0.0"
