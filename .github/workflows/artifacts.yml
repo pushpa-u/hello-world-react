@@ -15,7 +15,6 @@ jobs:
         fetch-depth: 0
         tags: true
 
-
     - name: Set Up Node.js
       uses: actions/setup-node@v3
 
@@ -42,11 +41,11 @@ jobs:
         echo "new_tag=$new_tag" >> $GITHUB_ENV
 
     - name: Create New Git Tag
-      env:
-        GITHUB_TOKEN: ${{ secrets.TOKEN }}
-      run: |
-        git config user.name "pushpa-u"
-        git config user.email "pushpa.u@10decoders.in"
+      # env:
+      #   GITHUB_TOKEN: ${{ secrets.TOKEN }}
+      # run: |
+      #   git config user.name "pushpa-u"
+      #   git config user.email "pushpa.u@10decoders.in"
         git tag ${{ env.new_tag }}
         git push origin ${{ env.new_tag }}
 
