@@ -1,8 +1,8 @@
-name: Node.js CI
+name: Build Artifacts
 
 on:
   push:
-      branches: "github-pipeline"
+      branches: "feature/github-artifacts"
 
 jobs:
   build:
@@ -17,6 +17,13 @@ jobs:
 
     - uses: actions/upload-artifact@v3
       with:
-        name: Build
+        name: Build-v${{ github.run_number }}
         path: build
         retention-days: 5
+        
+    - name: Output Run ID
+      run: echo ${{ github.run_id }}
+    - name: Output Run Number
+      run: echo ${{ github.run_number }}
+    - name: Output Run Attempt
+      run: echo ${{ github.run_attempt }}
