@@ -43,9 +43,9 @@ jobs:
     - name: Create New Git Tag
       # env:
       #   GITHUB_TOKEN: ${{ secrets.TOKEN }}
-      # run: |
-      #   git config user.name "pushpa-u"
-      #   git config user.email "pushpa.u@10decoders.in"
+      run: |
+        # git config user.name "pushpa-u"
+        # git config user.email "pushpa.u@10decoders.in"
         git tag ${{ env.new_tag }}
         git push origin ${{ env.new_tag }}
 
