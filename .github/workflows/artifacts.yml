@@ -49,7 +49,6 @@ jobs:
         git tag ${{ env.new_tag }}
         git push origin ${{ env.new_tag }}
 
-
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v3
       with:
