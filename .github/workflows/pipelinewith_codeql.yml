@@ -3,6 +3,10 @@ on:
   push: 
     branches:
       - pipeline-with-codeql
+
+env:
+  DOCKER_REPO: "codeql"
+  DOCKERHUB_USER_ID: "pushpau"
   
 jobs: 
   build_and_push:
