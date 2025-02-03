@@ -1,7 +1,8 @@
 name: CodeQL Exercice
 on: 
   push: 
-    branches: [main]
+    branches:
+      - pipeline-with-codeql
   
 jobs: 
   build_and_push:
