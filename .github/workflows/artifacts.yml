@@ -2,10 +2,9 @@ name: Build Artifacts
 
 on:
   push:
-    branches:
-      # - feature/github-artifacts
-      - release
-      - dev
+    branches-ignore:
+      - feature/github-artifacts
+
 
 
 
