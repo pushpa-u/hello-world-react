@@ -1,59 +1,59 @@
-name: Build Artifacts
+# name: Build Artifacts
 
-on:
-  push:
-    branches-ignore:
-      - feature/github-artifacts
+# on:
+#   push:
+#     branches:
+#       - feature/github-artifacts
 
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-        tags: true
+#     steps:
+#     - name: Checkout Repository
+#       uses: actions/checkout@v3
+#       with:
+#         fetch-depth: 0
+#         tags: true
 
-    - name: Set Up Node.js
-      uses: actions/setup-node@v3
+#     - name: Set Up Node.js
+#       uses: actions/setup-node@v3
 
-    - name: Install Dependencies
-      run: npm ci
+#     - name: Install Dependencies
+#       run: npm ci
 
-    - name: Build Project
-      run: npm run build --if-present
+#     - name: Build Project
+#       run: npm run build --if-present
 
-    - name: Get Latest Git Tag
-      id: get_tag
-      run: |
-        git fetch --tags
-        latest_tag=$(git tag --sort=-committerdate | grep -o 'v.*' | sort -r | head -1)
-        echo $latest_tag
-        if [ -z "$latest_tag" ]; then
-          new_tag="v1.0.0"
-        else
-          version=$(echo $latest_tag | sed 's/v//')
-          IFS='.' read -r major minor patch <<< "$version"
-          patch=$((patch + 1))
-          new_tag="v${major}.${minor}.${patch}"
-        fi
-        echo "new_tag=$new_tag" >> $GITHUB_ENV
+#     - name: Get Latest Git Tag
+#       id: get_tag
+#       run: |
+#         git fetch --tags
+#         latest_tag=$(git tag --sort=-committerdate | grep -o 'v.*' | sort -r | head -1)
+#         echo $latest_tag
+#         if [ -z "$latest_tag" ]; then
+#           new_tag="v1.0.0"
+#         else
+#           version=$(echo $latest_tag | sed 's/v//')
+#           IFS='.' read -r major minor patch <<< "$version"
+#           patch=$((patch + 1))
+#           new_tag="v${major}.${minor}.${patch}"
+#         fi
+#         echo "new_tag=$new_tag" >> $GITHUB_ENV
 
-    - name: Create New Git Tag
-      # env:
-      #   GITHUB_TOKEN: ${{ secrets.TOKEN }}
-      run: |
-        # git config user.name "pushpa-u"
-        # git config user.email "pushpa.u@10decoders.in"
-        git tag ${{ env.new_tag }}
-        git push origin ${{ env.new_tag }}
+#     - name: Create New Git Tag
+#       # env:
+#       #   GITHUB_TOKEN: ${{ secrets.TOKEN }}
+#       run: |
+#         # git config user.name "pushpa-u"
+#         # git config user.email "pushpa.u@10decoders.in"
+#         git tag ${{ env.new_tag }}
+#         git push origin ${{ env.new_tag }}
 
-    - name: Upload Build Artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: Build-${{ env.new_tag }}
-        path: build
+#     - name: Upload Build Artifact
+#       uses: actions/upload-artifact@v3
+#       with:
+#         name: Build-${{ env.new_tag }}
+#         path: build
 
