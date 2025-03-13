@@ -1,9 +1,9 @@
 name: Build Artifacts
 
 on:
-  # push:
-  #   branches:
-  #     # - feature/github-artifacts
+  push:
+    # branches:
+    #   # - feature/github-artifacts
 
 jobs:
   build:
