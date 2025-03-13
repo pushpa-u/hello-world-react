@@ -1,7 +1,7 @@
 name: Build Artifacts
 
-on:
-  push:
+# on:
+#   push:
     # branches:
     #   # - feature/github-artifacts
 
