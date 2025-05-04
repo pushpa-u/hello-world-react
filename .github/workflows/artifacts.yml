@@ -1,8 +1,8 @@
 name: Build Artifacts
 
 on:
-  push:
-    branches-ignore:
+  pull_request:
+    branches:
       - feature/github-artifacts
 
 
